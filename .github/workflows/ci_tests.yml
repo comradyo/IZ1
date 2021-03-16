@@ -23,6 +23,6 @@ jobs:
     - name: Run Make..
       run: mkdir build && cd build && cmake ../ && make
     - name: Test
-      run: ./tests
+      run: cd build && ./tests
     - name: Valgrind
       run: valgrind --tool=memcheck --leak-check=yes tests
