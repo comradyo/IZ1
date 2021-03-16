@@ -1,0 +1,28 @@
+name: 'CI_tests'
+on: 
+  push:
+    branches:
+      - IZ1_branch
+
+jobs:
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Installing valgrind...
+      run: sudo apt-get install -y valgrind
+    - name: Installing Googletests...
+      run: sudo apt-get install -y googletest && sudo apt-get install libgtest-dev
+    - name: Installing Cppcheck...
+      run: sudo apt-get install -y cppcheck
+    - name: Run Cppcheck...
+      run: cppcheck *.c
+    - name: Run Make..
+      run: cmake ../ && make
+    - name: Test
+      run: cmake ../ && make && ./tests
+    - name: Valgrind
+      run: valgrind --tool=memcheck --leak-check=yes tests
