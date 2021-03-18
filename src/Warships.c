@@ -1,5 +1,5 @@
 #include <stdlib.h>
-#include "Warships.h"
+#include "../include/Warships.h"
 #include "stdio.h"
 #include "string.h"
 
@@ -34,26 +34,25 @@ const Warship warships[NUMBER_OF_WARSHIPS] = {
 };
 
 void print_info_about_battles(int warship_id) {
-    for (int i = 0; i < NUMBER_OF_BATTLES; ++i) {
+    for (size_t i = 0; i < NUMBER_OF_BATTLES; ++i) {
         printf("\t\t%s\n", warships[warship_id].battles[i].name);
     }
 }
 
 void print_list_of_warships(List *list_of_warships) {
     Node *node_temp_warship = list_of_warships->head;
-    if(node_temp_warship == NULL)
-    {
-        printf("No warships found");
+    if(node_temp_warship == NULL) {
+        printf("No warships found\n");
         return;
     }
     while (node_temp_warship != NULL) {
         Warship temp_warship = warships[node_temp_warship->value];
         printf("%s%c", "_______________________________", '\n');
-        printf("Name: \t\t\t\t\t\t %s%c", temp_warship.name, '\n');
-        printf("Shipyard: \t\t\t\t\t %s%c", temp_warship.shipyard, '\n');
-        printf("Year of descent: \t\t\t %s%c", temp_warship.year_of_descent, '\n');
+        printf("Name: \t\t\t\t %s%c", temp_warship.name, '\n');
+        printf("Shipyard: \t\t\t %s%c", temp_warship.shipyard, '\n');
+        printf("Year of descent: \t\t %s%c", temp_warship.year_of_descent, '\n');
         printf("Number of crew members: \t %s%c", temp_warship.number_of_crew_members, '\n');
-        printf("Condition: \t\t\t\t\t %s%c", temp_warship.condition, '\n');
+        printf("Condition: \t\t\t %s%c", temp_warship.condition, '\n');
         printf("Battles: %c", '\n');
         print_info_about_battles(temp_warship.id_warship);
         printf("%s%c", "_______________________________", '\n');
@@ -65,10 +64,11 @@ void warship_search_by_parameter(List *list_of_warships, char parameter[SIZE_OF_
     if (list_of_warships == NULL) return;
     if (list_of_warships->head == NULL) return;
     Node *temp_warship = list_of_warships->head;
-    Node *temp_warship_1 = list_of_warships->head;
+    //next_temp_warship нужен, чтобы не потерять значение, следующее за temp_warship, который, возможно, будет удалён из списка.
+    Node *next_temp_warship = list_of_warships->head;
     //Смотрим все корабли в списке и проверяем, совпадает ли переданный параметр определённого типа с аналогичным параметром самого корабля.
     while (temp_warship != NULL) {
-        temp_warship_1 = temp_warship->next;
+        next_temp_warship = temp_warship->next;
         switch (type_of_parameter) {
             case _name:
                 if (strcmp(warships[temp_warship->value].name, parameter) != 0)
@@ -105,27 +105,27 @@ void warship_search_by_parameter(List *list_of_warships, char parameter[SIZE_OF_
                     delete_node(list_of_warships, temp_warship);
                 break;
         }
-        temp_warship = temp_warship_1;
+        temp_warship = next_temp_warship;
     }
     free(temp_warship);
     temp_warship = NULL;
-    free(temp_warship_1);
-    temp_warship_1 = NULL;
+    free(next_temp_warship);
+    next_temp_warship = NULL;
 }
 
-List warship_search(
-        char parameters[NUMBER_OF_PARAMETERS][SIZE_OF_NAME]
-) {
+List warship_search(char parameters[NUMBER_OF_PARAMETERS][SIZE_OF_NAME]) {
     //Тип параметра, по которому будет производиться поиск.
     Parameter type_of_param = _name;
     List list_of_found_warships;
     list_of_found_warships.head = NULL;
-    for (int i = 0; i < NUMBER_OF_WARSHIPS; ++i)
+    for (size_t i = 0; i < NUMBER_OF_WARSHIPS; ++i) {
         push_front(&list_of_found_warships, i);
+    }
 
-    for (int i = 0; i < NUMBER_OF_PARAMETERS; ++i) {
-        if (strlen(parameters[i]) != 0)
+    for (size_t i = 0; i < NUMBER_OF_PARAMETERS; ++i) {
+        if (strlen(parameters[i]) != 0) {
             warship_search_by_parameter(&list_of_found_warships, parameters[i], type_of_param);
+        }
         type_of_param++;
     }
 
@@ -134,10 +134,12 @@ List warship_search(
 
 int read_parameters(char parameters_to_return[NUMBER_OF_PARAMETERS][SIZE_OF_NAME]) {
     Parameter param = _name;
-    for (int i = 0; i < NUMBER_OF_PARAMETERS; ++i) {
+    for (size_t i = 0; i < NUMBER_OF_PARAMETERS; ++i) {
         if (strlen(parameters_to_return[i]) == 0) {
             printf("Enter the %s%s", names_of_parameters[i], ":\t");
-            fgets(parameters_to_return[i], SIZE_OF_NAME, stdin);
+            if(fgets(parameters_to_return[i], SIZE_OF_NAME, stdin) == NULL) {
+                return -1;
+            }
             parameters_to_return[i][strcspn(parameters_to_return[i], "\n")] = 0;
         }
         //Проверка, являются ли числами те числовые параметры, которые ввел пользователь.

@@ -1,8 +1,14 @@
 #include <stdlib.h>
-#include "List.h"
+#include "../include/List.h"
 
 void push_front(List *lst, int value) {
+    if(lst == NULL) {
+        return;
+    }
     Node *tmp = (Node *) malloc(sizeof(struct Node));
+    if(tmp == NULL) {
+        return;
+    }
     tmp->value = value;
     if (lst->head == NULL) {
         tmp->next = NULL;
@@ -16,6 +22,9 @@ void push_front(List *lst, int value) {
 }
 
 void delete_node(List *lst, Node *node_to_delete) {
+    if(lst == NULL) {
+        return;
+    }
     if (node_to_delete != NULL) {
         if (node_to_delete == lst->head) {
             if (node_to_delete->next != NULL)
@@ -32,6 +41,9 @@ void delete_node(List *lst, Node *node_to_delete) {
 }
 
 void clear_list(List *lst) {
+    if(lst == NULL) {
+        return;
+    }
     Node *prev = NULL;
     while (lst->head != NULL) {
         prev = lst->head;
@@ -44,17 +56,27 @@ void clear_list(List *lst) {
 }
 
 _Bool lists_are_equal(List *lst_1, List *lst_2) {
-    if (lst_1 == NULL && lst_2 != NULL || lst_1 != NULL && lst_2 == NULL) return 0;
-    if (lst_1 == NULL && lst_2 == NULL) return 1;
+    if (lst_1 == NULL && lst_2 != NULL || lst_1 != NULL && lst_2 == NULL) {
+        return 0;
+    }
+    if (lst_1 == NULL && lst_2 == NULL) {
+        return 1;
+    }
     Node *temp_1 = lst_1->head;
     Node *temp_2 = lst_2->head;
-    if (temp_1 == NULL && temp_2 != NULL || temp_1 != NULL && temp_2 == NULL) return 0;
+    if (temp_1 == NULL && temp_2 != NULL || temp_1 != NULL && temp_2 == NULL) {
+        return 0;
+    }
     while (temp_1 != NULL && temp_2 != NULL) {
         if (temp_1->value == temp_2->value) {
             temp_1 = temp_1->next;
             temp_2 = temp_2->next;
-        } else return 0;
-        if (temp_1 == NULL && temp_2 != NULL || temp_1 != NULL && temp_2 == NULL) return 0;
+        } else {
+            return 0;
+        }
+        if (temp_1 == NULL && temp_2 != NULL || temp_1 != NULL && temp_2 == NULL) {
+            return 0;
+        }
     }
     return 1;
 }

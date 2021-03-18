@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include "Warships.h"
+#include "../include/Warships.h"
 
 /*
  * Создать структуру для хранения информации о военных кораблях:
@@ -26,7 +26,7 @@ int main() {
     if (read_parameters(parameters) == 1) {
         found_lst = warship_search(parameters);
     } else {
-        printf("ERROR INPUT");
+        printf("ERROR INPUT\n");
         return -1;
     }
 
@@ -36,4 +36,5 @@ int main() {
     clear_list(&found_lst);
 
     return 0;
+    
 }

@@ -1,7 +1,7 @@
 #include "gtest/gtest.h"
 
 extern "C" {
-    #include "Warships.h"
+    #include "../include/Warships.h"
 }
 
 TEST(list_testing, test_1) {
