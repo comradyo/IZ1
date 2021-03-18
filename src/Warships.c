@@ -3,152 +3,159 @@
 #include "stdio.h"
 #include "string.h"
 
-//Массив названий параметров, нужен для процедуры вывода параметров корабля.
-const char *names_of_parameters[NUMBER_OF_PARAMETERS] = {
-        "name of warship", "name of shipyard", "year of descent", "number of crew members", "name of the battle",
-        "condition"
-};
+_Bool initialize_warship(Warship* warship_to_initialize, _Bool to_search) {
+    if(warship_to_initialize == NULL) return 0;
 
-//Массив кораблей.
-const Warship warships[NUMBER_OF_WARSHIPS] = {
-        0, "Nikolay II", "Murmansk", "2005", "50", {"War for Belarus", "War for Japan", "War for Uganda"},
-        "Decommissioned",
-        1, "Comrade Xi", "Bohay", "1990", "13", {"War for China", "War for Afghanistan", "War for USSR"},
-        "On combat duty",
-        2, "Donald Trump", "Bayliner", "2018", "50", {"War for USSR", "War for Russia", "War for China"},
-        "On combat duty",
-        3, "Aleksandr III", "Severodvinsk", "1990", "26", {"War for USSR", "War for Russia", "War for USA"},
-        "Decommissioned",
-        4, "Ivan Grozny", "Severodvinsk", "1950", "13", {"War for China", "War for Japan", "War for USSR"},
-        "On combat duty",
-        5, "Yastreb", "Murmansk", "2005", "50", {"War for Belarus", "War for Ukraine", "War for Russia"},
-        "On combat duty",
-        6, "Tuang", "Peking", "2005", "48", {"War for Earth", "War for England", "War for China"},
-        "On combat duty",
-        7, "Chan", "Bohay", "2018", "13", {"War for Belarus", "War for Russia", "War for Uganda"},
-        "Decommissioned",
-        8, "Powerbank", "New-York", "1990", "48", {"War for Russia", "War for England", "War for USA"},
-        "On combat duty",
-        9, "Molnia", "Severodvinsk", "2005", "26", {"War for Earth", "War for England", "War for China"},
-        "Decommissioned",
-};
-
-void print_info_about_battles(int warship_id) {
-    for (size_t i = 0; i < NUMBER_OF_BATTLES; ++i) {
-        printf("\t\t%s\n", warships[warship_id].battles[i].name);
+    printf("Enter the name of the warship: ");
+    if(fgets(warship_to_initialize->name, SIZE_OF_NAME, stdin) == NULL) {
+        return 0;
     }
+    warship_to_initialize->name[strcspn(warship_to_initialize->name, "\n")] = 0;
+    if(to_search == 0 && strlen(warship_to_initialize->name) == 0) {
+        return 0;
+    }
+
+    printf("Enter the shipyard: ");
+    if(fgets(warship_to_initialize->shipyard, SIZE_OF_NAME, stdin) == NULL) {
+        return 0;
+    }
+    warship_to_initialize->shipyard[strcspn(warship_to_initialize->shipyard, "\n")] = 0;
+    if(to_search == 0 && strlen(warship_to_initialize->shipyard) == 0) {
+        return 0;
+    }
+
+    printf("Enter the year of descending: ");
+    if(scanf("%d", &warship_to_initialize->year_of_descent) == 0) {
+        return 0;
+    }
+    if(to_search == 0 && warship_to_initialize->year_of_descent == 0) {
+        return 0;
+    }
+
+    printf("Enter the number of crewmates: ");
+    if(scanf("%d", &warship_to_initialize->number_of_crewmates) == 0) {
+        return 0;
+    }
+    if(to_search == 0 && warship_to_initialize->number_of_crewmates == 0) {
+        return 0;
+    }
+    getchar();
+
+    printf("Enter the condition: ");
+    if(fgets(warship_to_initialize->condition, SIZE_OF_NAME, stdin) == NULL) {
+        return 0;
+    }
+    warship_to_initialize->condition[strcspn(warship_to_initialize->condition, "\n")] = 0;
+    if(to_search == 0 && strlen(warship_to_initialize->condition) == 0) {
+        return 0;
+    }
+
+    for(size_t i = 0; i<NUMBER_OF_BATTLES; ++i) {
+        printf("Enter the name of %zu%s", i, " battle: ");
+        if(fgets(warship_to_initialize->battles[i], SIZE_OF_NAME, stdin) == NULL) {
+            return 0;
+        }
+        warship_to_initialize->battles[i][strcspn(warship_to_initialize->battles[i], "\n")] = 0;
+        if(to_search == 0 && strlen(warship_to_initialize->battles[i]) == 0) {
+            return 0;
+        }
+    }
+
+    return 1;
 }
 
-void print_list_of_warships(List *list_of_warships) {
+_Bool fill_array_of_warships(Warship* array_of_warships, size_t size_of_array) {
+    if(array_of_warships == NULL || size_of_array < 2) {
+        return 0;
+    }
+    for(size_t i = 0; i<size_of_array; ++i) {
+        printf("\n======================================\n");
+        printf("Initialization of %zu%s", i, " warship\n");
+        printf("======================================\n");
+        if(initialize_warship(&array_of_warships[i], 0) == 0) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+void print_list_of_warships(List *list_of_warships, const Warship* array_of_warships, size_t size_of_array) {
+    if(list_of_warships == NULL || array_of_warships == NULL || size_of_array < 2) {
+        return;
+    }
     Node *node_temp_warship = list_of_warships->head;
     if(node_temp_warship == NULL) {
         printf("No warships found\n");
         return;
     }
     while (node_temp_warship != NULL) {
-        Warship temp_warship = warships[node_temp_warship->value];
+        if(node_temp_warship->value < 0 || node_temp_warship->value >= size_of_array) {
+            printf("Incorrect list of warships\n");
+            return;
+        }
+        Warship temp_warship = array_of_warships[node_temp_warship->value];
         printf("%s%c", "_______________________________", '\n');
         printf("Name: \t\t\t\t %s%c", temp_warship.name, '\n');
         printf("Shipyard: \t\t\t %s%c", temp_warship.shipyard, '\n');
-        printf("Year of descent: \t\t %s%c", temp_warship.year_of_descent, '\n');
-        printf("Number of crew members: \t %s%c", temp_warship.number_of_crew_members, '\n');
+        printf("Year of descent: \t\t %d%c", temp_warship.year_of_descent, '\n');
+        printf("Number of crew members: \t %d%c", temp_warship.number_of_crewmates, '\n');
         printf("Condition: \t\t\t %s%c", temp_warship.condition, '\n');
         printf("Battles: %c", '\n');
-        print_info_about_battles(temp_warship.id_warship);
+        for(size_t j = 0; j<NUMBER_OF_BATTLES; ++j)
+            printf("\t\t%s\n", temp_warship.battles[j]);
         printf("%s%c", "_______________________________", '\n');
         node_temp_warship = node_temp_warship->next;
     }
 }
 
-void warship_search_by_parameter(List *list_of_warships, char parameter[SIZE_OF_NAME], Parameter type_of_parameter) {
-    if (list_of_warships == NULL) return;
-    if (list_of_warships->head == NULL) return;
-    Node *temp_warship = list_of_warships->head;
-    //next_temp_warship нужен, чтобы не потерять значение, следующее за temp_warship, который, возможно, будет удалён из списка.
-    Node *next_temp_warship = list_of_warships->head;
-    //Смотрим все корабли в списке и проверяем, совпадает ли переданный параметр определённого типа с аналогичным параметром самого корабля.
-    while (temp_warship != NULL) {
-        next_temp_warship = temp_warship->next;
-        switch (type_of_parameter) {
-            case _name:
-                if (strcmp(warships[temp_warship->value].name, parameter) != 0)
-                    delete_node(list_of_warships, temp_warship);
-                break;
-            case _shipyard:
-                if (strcmp(warships[temp_warship->value].shipyard, parameter) != 0)
-                    delete_node(list_of_warships, temp_warship);
-                break;
-            case _year_of_descent:
-                if (strcmp(warships[temp_warship->value].year_of_descent, parameter) != 0)
-                    delete_node(list_of_warships, temp_warship);
-                break;
-            case _number_of_crew_members:
-                if (strcmp(warships[temp_warship->value].number_of_crew_members, parameter) != 0)
-                    delete_node(list_of_warships, temp_warship);
-                break;
-            case _battles: {
-                _Bool warship_was_in_battle = 0;
-                //Поиск по всем сражениям, в которых принимал участие корабль
-                for (int i = 0; i < NUMBER_OF_BATTLES; ++i) {
-                    if (strcmp(warships[temp_warship->value].battles[i].name, parameter) == 0) {
-                        warship_was_in_battle = 1;
-                        i = NUMBER_OF_BATTLES;
-                    }
-                }
-                if (warship_was_in_battle == 0) {
-                    delete_node(list_of_warships, temp_warship);
-                }
-            }
-                break;
-            case _condition:
-                if (strcmp(warships[temp_warship->value].condition, parameter) != 0)
-                    delete_node(list_of_warships, temp_warship);
-                break;
-        }
-        temp_warship = next_temp_warship;
+_Bool compare_two_warships(Warship first_warship, Warship second_warship) {
+    if(strlen(first_warship.name) != 0 && strcmp(first_warship.name, second_warship.name) != 0) {
+        return 0;
     }
-    free(temp_warship);
-    temp_warship = NULL;
-    free(next_temp_warship);
-    next_temp_warship = NULL;
+    if(strlen(first_warship.shipyard) != 0 && strcmp(first_warship.shipyard, second_warship.shipyard) != 0) {
+        return 0;
+    }
+    if(first_warship.year_of_descent != 0 && first_warship.year_of_descent != second_warship.year_of_descent) {
+        return 0;
+    }
+    if(first_warship.number_of_crewmates != 0 && first_warship.number_of_crewmates != second_warship.number_of_crewmates) {
+        return 0;
+    }
+    if(strlen(first_warship.condition) != 0 && strcmp(first_warship.condition, second_warship.condition) != 0) {
+        return 0;
+    }
+    //Сравнение названий боёв.
+    for(size_t i = 0; i<NUMBER_OF_BATTLES; ++i) {
+        if(strlen(first_warship.battles[i]) != 0 && strcmp(first_warship.battles[i], second_warship.battles[i]) != 0) {
+            return 0;
+        }
+    }
+    return 1;
 }
 
-List warship_search(char parameters[NUMBER_OF_PARAMETERS][SIZE_OF_NAME]) {
-    //Тип параметра, по которому будет производиться поиск.
-    Parameter type_of_param = _name;
+List search_warships(const Warship* warship_to_compare_with, const Warship* array_of_warships, size_t size_of_array) {
+
     List list_of_found_warships;
     list_of_found_warships.head = NULL;
-    for (size_t i = 0; i < NUMBER_OF_WARSHIPS; ++i) {
+
+    if(warship_to_compare_with == NULL || array_of_warships == NULL || size_of_array < 2) {
+        return list_of_found_warships;
+    }
+
+    for(size_t i = 0; i<size_of_array; ++i) {
         push_front(&list_of_found_warships, i);
     }
 
-    for (size_t i = 0; i < NUMBER_OF_PARAMETERS; ++i) {
-        if (strlen(parameters[i]) != 0) {
-            warship_search_by_parameter(&list_of_found_warships, parameters[i], type_of_param);
+    Node *node_temp_warship = list_of_found_warships.head;
+    Node *next_temp_node = list_of_found_warships.head;
+
+    while(node_temp_warship != NULL) {
+        next_temp_node = node_temp_warship->next;
+        if(compare_two_warships(*warship_to_compare_with, array_of_warships[node_temp_warship->value]) == 0) {
+            delete_node(&list_of_found_warships, node_temp_warship);
         }
-        type_of_param++;
+        node_temp_warship = next_temp_node;
     }
 
     return list_of_found_warships;
-}
-
-int read_parameters(char parameters_to_return[NUMBER_OF_PARAMETERS][SIZE_OF_NAME]) {
-    Parameter param = _name;
-    for (size_t i = 0; i < NUMBER_OF_PARAMETERS; ++i) {
-        if (strlen(parameters_to_return[i]) == 0) {
-            printf("Enter the %s%s", names_of_parameters[i], ":\t");
-            if(fgets(parameters_to_return[i], SIZE_OF_NAME, stdin) == NULL) {
-                return -1;
-            }
-            parameters_to_return[i][strcspn(parameters_to_return[i], "\n")] = 0;
-        }
-        //Проверка, являются ли числами те числовые параметры, которые ввел пользователь.
-        if (param == _number_of_crew_members || param == _year_of_descent) {
-            if (atoi(parameters_to_return[i]) == 0 && strlen(parameters_to_return[i]) != 0) {
-                return -1;
-            }
-        }
-        param++;
-    }
-    return 1;
 }

@@ -12,45 +12,34 @@
 //Число боёв у корабля
 #define NUMBER_OF_BATTLES 3
 
-//Структура "Бои"
-typedef struct {
-    char name[SIZE_OF_NAME];
-} Battle;
-
 //Структура "Корабли"
 typedef struct {
-    int id_warship;                             //ID корабля
-    char name[SIZE_OF_NAME];                    //Название
-    char shipyard[SIZE_OF_NAME];                //Верфь-производитель
-    char year_of_descent[SIZE_OF_NAME];         //Год спуска на воду
-    char number_of_crew_members[SIZE_OF_NAME];  //Численность экипажа
-    Battle battles[NUMBER_OF_BATTLES];          //Бои, в которых корабль принимал участие
-    char condition[SIZE_OF_NAME];               //Состояние
+    int id_warship;                                     //ID корабля
+    char name[SIZE_OF_NAME];                            //Название
+    char shipyard[SIZE_OF_NAME];                        //Верфь-производитель
+    int year_of_descent;                                //Год спуска на воду
+    int number_of_crewmates;                            //Численность экипажа
+    char condition[SIZE_OF_NAME];                       //Состояние
+    char battles[NUMBER_OF_BATTLES][SIZE_OF_NAME];      //Бои, в которых корабль принимал участие
 } Warship;
 
-//Прикладная процедура печати боёв, в котором участвовал корабль
-void print_info_about_battles(int warship_id);
+//Ввод массива кораблей.
+_Bool fill_array_of_warships(Warship* array_of_warships, size_t size_of_array);
 
-//Вывод списка всех кораблей
-void print_list_of_warships(List *list_of_warships);
+//Инициализация корабля.
+//Если to_search == 1, то необязательно вводить все поля.
+_Bool initialize_warship(Warship* warship_to_initialize, _Bool to_search);
 
-//Перечисляемый тип параметров, нужен для поиска корабля по параметрам
-typedef enum {
-    _name = 0,
-    _shipyard = 1,
-    _year_of_descent = 2,
-    _number_of_crew_members = 3,
-    _battles = 4,
-    _condition = 5
-} Parameter;
+_Bool compare_two_warships(Warship first_ws, Warship second_ws);
 
-//Поиск корабля по параметру, параметры задаются через enum Parameter
-void warship_search_by_parameter(List *list_of_warships, char parameter[SIZE_OF_NAME], Parameter type_of_parameter);
+//Поиск кораблей, параметры которых совпадают с параметрами переданного корабля.
+//search_warships(warship_for_searching, warships_arr, size_of_warships_array);
+List search_warships(const Warship* warship_to_compare_with, const Warship* array_of_warships, size_t size_of_array);
+
+//Вывод кораблей из списка
+void print_list_of_warships(List *list_of_warships, const Warship* array_of_warships, size_t size_of_array);
 
 //Функция, возвращающая список найденных кораблей
 List warship_search(char parameters[NUMBER_OF_PARAMETERS][SIZE_OF_NAME]);
-
-//Считывание параметров
-int read_parameters(char parameters_to_return[NUMBER_OF_PARAMETERS][SIZE_OF_NAME]);
 
 #endif //IZ1_WARSHIPS_H

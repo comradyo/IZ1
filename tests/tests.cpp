@@ -4,6 +4,18 @@ extern "C" {
     #include "../include/Warships.h"
 }
 
+const Warship warships[NUMBER_OF_WARSHIPS] = {
+        0, "Nikolay II", "Murmansk", 2005, 50, "Decommissioned", {"War for Belarus", "War for Japan", "War for Uganda"},
+        1, "Comrade Xi", "Bohay", 1990, 13, "On combat duty", {"War for China", "War for Afghanistan", "War for USSR"},
+        2, "Donald Trump", "Bayliner", 2018, 50, "On combat duty", {"War for USSR", "War for Russia", "War for China"},
+        3, "Aleksandr III", "Severodvinsk", 1990, 26, "Decommissioned", {"War for USSR", "War for Russia", "War for USA"},
+        4, "Ivan Grozny", "Severodvinsk", 1950, 13, "On combat duty", {"War for China", "War for Japan", "War for USSR"},
+        6, "Tuang", "Peking", 2005, 48, "On combat duty", {"War for Earth", "War for England", "War for China"},
+        7, "Chan", "Bohay", 2018, 13, "Decommissioned", {"War for Belarus", "War for Russia", "War for Uganda"},
+        8, "Powerbank", "New-York", 1990, 48, "On combat duty", {"War for Russia", "War for England", "War for USA"},
+        9, "Molnia", "Severodvinsk", 2005, 26, "Decommissioned", {"War for Earth", "War for England", "War for China"}
+};
+
 TEST(list_testing, test_1) {
     List lst_1;
     lst_1.head = NULL;
@@ -120,215 +132,42 @@ TEST(list_testing, test_6) {
 }
 
 TEST(warship_searching, test_with_no_parameters) {
-    char parameters[NUMBER_OF_PARAMETERS][SIZE_OF_NAME] = {
-            "", "", "", "", "", ""
-    };
+    Warship parameters = {0, "", "", 0, 0, "", {"", "", ""}};
     List correct_list;
     correct_list.head = NULL;
     for(int i = 0; i<NUMBER_OF_WARSHIPS; ++i)
         push_front(&correct_list, i);
 
-    List tested_list = warship_search(parameters);
+    List tested_list = search_warships(&parameters, warships, NUMBER_OF_WARSHIPS);
 
     ASSERT_TRUE(lists_are_equal(&correct_list, &tested_list));
     clear_list(&correct_list);
     clear_list(&tested_list);
 }
 
-TEST(warship_searching, test_with_one_parameter_1) {
-    char parameters[NUMBER_OF_PARAMETERS][SIZE_OF_NAME] = {
-            "Nikolay II", "", "", "", "", ""
-    };
+TEST(warship_searching, test_with_all_parameters) {
+    Warship parameters = {0, "Nikolay II", "Murmansk", 2005, 50, "Decommissioned", {"War for Belarus", "War for Japan", "War for Uganda"}};
     List correct_list;
     correct_list.head = NULL;
     push_front(&correct_list, 0);
 
-    List tested_list = warship_search(parameters);
+    List tested_list = search_warships(&parameters, warships, NUMBER_OF_WARSHIPS);
 
     ASSERT_TRUE(lists_are_equal(&correct_list, &tested_list));
     clear_list(&correct_list);
     clear_list(&tested_list);
 }
 
-TEST(warship_searching, test_with_one_parameter_2) {
-    char parameters[NUMBER_OF_PARAMETERS][SIZE_OF_NAME] = {
-            "", "Severodvinsk", "", "", "", ""
-    };
-    List correct_list;
-    correct_list.head = NULL;
-    push_front(&correct_list, 3);
-    push_front(&correct_list, 4);
-    push_front(&correct_list, 9);
-
-    List tested_list = warship_search(parameters);
-
-    ASSERT_TRUE(lists_are_equal(&correct_list, &tested_list));
-    clear_list(&correct_list);
-    clear_list(&tested_list);
+TEST(warship_searching, comparing_warships_1) {
+    Warship ws1 = {7, "Chan", "Bohay", 2018, 13, "Decommissioned", {"War for Belarus", "War for Russia", "War for Uganda"}};
+    Warship ws2 = {7, "Chan", "Bohay", 2018, 13, "Decommissioned", {"War for Belarus", "War for Russia", "War for Uganda"}};
+    ASSERT_TRUE(compare_two_warships(ws1, ws2));
 }
 
-TEST(warship_searching, test_with_one_parameter_3) {
-    char parameters[NUMBER_OF_PARAMETERS][SIZE_OF_NAME] = {
-            "", "", "2005", "", "", ""
-    };
-    List correct_list;
-    correct_list.head = NULL;
-    push_front(&correct_list, 0);
-    push_front(&correct_list, 5);
-    push_front(&correct_list, 6);
-    push_front(&correct_list, 9);
-
-    List tested_list = warship_search(parameters);
-
-    ASSERT_TRUE(lists_are_equal(&correct_list, &tested_list));
-    clear_list(&correct_list);
-    clear_list(&tested_list);
-}
-
-TEST(warship_searching, test_with_one_parameter_4) {
-    char parameters[NUMBER_OF_PARAMETERS][SIZE_OF_NAME] = {
-            "", "", "", "26", "", ""
-    };
-    List correct_list;
-    correct_list.head = NULL;
-    push_front(&correct_list, 3);
-    push_front(&correct_list, 9);
-
-    List tested_list = warship_search(parameters);
-
-    ASSERT_TRUE(lists_are_equal(&correct_list, &tested_list));
-    clear_list(&correct_list);
-    clear_list(&tested_list);
-}
-
-TEST(warship_searching, test_with_one_parameter_5) {
-    char parameters[NUMBER_OF_PARAMETERS][SIZE_OF_NAME] = {
-            "", "", "", "", "War for USSR", ""
-    };
-    List correct_list;
-    correct_list.head = NULL;
-    push_front(&correct_list, 1);
-    push_front(&correct_list, 2);
-    push_front(&correct_list, 3);
-    push_front(&correct_list, 4);
-
-    List tested_list = warship_search(parameters);
-
-    ASSERT_TRUE(lists_are_equal(&correct_list, &tested_list));
-    clear_list(&correct_list);
-    clear_list(&tested_list);
-}
-
-TEST(warship_searching, test_with_one_parameter_6) {
-    char parameters[NUMBER_OF_PARAMETERS][SIZE_OF_NAME] = {
-            "", "", "", "", "", "On combat duty"
-    };
-    List correct_list;
-    correct_list.head = NULL;
-    push_front(&correct_list, 1);
-    push_front(&correct_list, 2);
-    push_front(&correct_list, 4);
-    push_front(&correct_list, 5);
-    push_front(&correct_list, 6);
-    push_front(&correct_list, 8);
-
-    List tested_list = warship_search(parameters);
-
-    ASSERT_TRUE(lists_are_equal(&correct_list, &tested_list));
-    clear_list(&correct_list);
-    clear_list(&tested_list);
-}
-
-TEST(warship_searching, test_with_several_parameters_1) {
-    char parameters[NUMBER_OF_PARAMETERS][SIZE_OF_NAME] = {
-            "", "", "2005", "", "", "On combat duty"
-    };
-    List correct_list;
-    correct_list.head = NULL;
-    push_front(&correct_list, 5);
-    push_front(&correct_list, 6);
-
-    List tested_list = warship_search(parameters);
-
-    ASSERT_TRUE(lists_are_equal(&correct_list, &tested_list));
-    clear_list(&correct_list);
-    clear_list(&tested_list);
-}
-
-TEST(warship_searching, test_with_several_parameters_2) {
-    char parameters[NUMBER_OF_PARAMETERS][SIZE_OF_NAME] = {
-            "", "", "1990", "", "War for Russia", ""
-    };
-    List correct_list;
-    correct_list.head = NULL;
-    push_front(&correct_list, 3);
-    push_front(&correct_list, 8);
-
-    List tested_list = warship_search(parameters);
-
-    ASSERT_TRUE(lists_are_equal(&correct_list, &tested_list));
-    clear_list(&correct_list);
-    clear_list(&tested_list);
-}
-
-TEST(warship_searching, test_with_several_parameters_3) {
-    char parameters[NUMBER_OF_PARAMETERS][SIZE_OF_NAME] = {
-            "", "Bohay", "", "13", "", ""
-    };
-    List correct_list;
-    correct_list.head = NULL;
-    push_front(&correct_list, 1);
-    push_front(&correct_list, 7);
-
-    List tested_list = warship_search(parameters);
-
-    ASSERT_TRUE(lists_are_equal(&correct_list, &tested_list));
-    clear_list(&correct_list);
-    clear_list(&tested_list);
-}
-
-TEST(warship_searching, test_with_all_parameters_1) {
-    char parameters[NUMBER_OF_PARAMETERS][SIZE_OF_NAME] = {
-            "Yastreb", "Murmansk", "2005", "50", "War for Belarus", "On combat duty"
-    };
-    List correct_list;
-    correct_list.head = NULL;
-    push_front(&correct_list, 5);
-
-    List tested_list = warship_search(parameters);
-
-    ASSERT_TRUE(lists_are_equal(&correct_list, &tested_list));
-    clear_list(&correct_list);
-    clear_list(&tested_list);
-}
-
-TEST(warship_searching, test_with_all_parameters_2) {
-    char parameters[NUMBER_OF_PARAMETERS][SIZE_OF_NAME] = {
-            "Powerbank", "New-York", "1990", "48", "War for USA", "On combat duty"
-    };
-    List correct_list;
-    correct_list.head = NULL;
-    push_front(&correct_list, 8);
-
-    List tested_list = warship_search(parameters);
-
-    ASSERT_TRUE(lists_are_equal(&correct_list, &tested_list));
-    clear_list(&correct_list);
-    clear_list(&tested_list);
-}
-
-TEST(warship_searching, incorrect_input_1) {
-    char parameters[NUMBER_OF_PARAMETERS][SIZE_OF_NAME] = {
-            "Comrade Xi", "Bohay", "hello", "13", "War for China", "On combat duty"
-    };
-    ASSERT_EQ(read_parameters(parameters), -1);
-}
-
-TEST(warship_searching, incorrect_input_2) {
-    char parameters[NUMBER_OF_PARAMETERS][SIZE_OF_NAME] = {
-            "Molnia", "Severodvinsk", "2005", "bye", "War for Earth", "Decommissioned"
-    };
-    ASSERT_EQ(read_parameters(parameters), -1);
+TEST(warship_searching, compare_warships_2) {
+    Warship ws1 = {7, "Chan", "Bohay", 2018, 13, "Decommissioned", {"War for Belarus", "War for Russia", "War for Uganda"}};
+    Warship ws2 = {2, "Donald Trump", "Bayliner", 2018, 50, "On combat duty", {"War for USSR", "War for Russia", "War for China"}};
+    ASSERT_FALSE(compare_two_warships(ws1, ws2));
 }
 
 int main(int argc, char **argv) {

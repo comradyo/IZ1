@@ -16,8 +16,6 @@ enable_testing()
 find_package(GTest REQUIRED)
 
 include_directories(${GTEST_INCLUDE_DIRS})
-#message(${GTEST_LIBRARIES})
-#message(${GTEST_INCLUDE_DIRS})
 
 add_executable(tests tests/tests.cpp)
 
