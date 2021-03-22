@@ -5,6 +5,9 @@ set(CMAKE_C_STANDARD 99)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+set(CMAKE_C_FLAGS "-pedantic -fprofile-arcs -ftest-coverage")
+set(CMAKE_CXX_FLAGS "-pedantic -fprofile-arcs -ftest-coverage")
+
 set(LIB_SOURCE_FILES src/List.c src/Warships.c)
 
 add_library(study_std_lib STATIC ${LIB_SOURCE_FILES})

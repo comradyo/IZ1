@@ -39,7 +39,4 @@ List search_warships(const Warship* warship_to_compare_with, const Warship* arra
 //Вывод кораблей из списка
 void print_list_of_warships(List *list_of_warships, const Warship* array_of_warships, size_t size_of_array);
 
-//Функция, возвращающая список найденных кораблей
-List warship_search(char parameters[NUMBER_OF_PARAMETERS][SIZE_OF_NAME]);
-
 #endif //IZ1_WARSHIPS_H
