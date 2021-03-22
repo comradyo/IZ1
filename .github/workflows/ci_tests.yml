@@ -26,5 +26,3 @@ jobs:
       run: cd build && ./tests
     - name: Running Valgrind...
       run: cd build && valgrind --tool=memcheck --leak-check=yes ./tests
-      after_success:
-    - bash <(curl -s https://codecov.io/bash)
