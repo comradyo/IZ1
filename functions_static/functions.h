@@ -37,8 +37,8 @@ _Bool generate_file_with_array(const char *name, size_t num_of_vectors, size_t n
 array_of_vectors *extract_vectors_from_file(FILE *file);
 
 //Извлечение объекта структуры array_of_vectors из файла
-array_of_vectors* extract_array_from_file(const char* filename);
+array_of_vectors *extract_array_from_file(const char *filename);
 
-float* extract_vector_from_file(const char* filename, size_t num_of_coords);
+float *extract_vector_from_file(const char *filename, size_t num_of_coords);
 
 #endif //IZ2_FUNCTIONS_H

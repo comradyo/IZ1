@@ -20,6 +20,7 @@ include_directories(functions_static)
 add_library(DYNAMIC_PAR SHARED dynamic_lib/parallel.c)
 include_directories(dynamic_lib)
 
+#executable program
 add_executable(prog src/main.c)
 target_link_libraries(prog STATIC_FUNCS)
 target_link_libraries(prog STATIC_SEQ)

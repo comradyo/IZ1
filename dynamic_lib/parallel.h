@@ -1,9 +1,6 @@
-//
-// Created by comradyo on 01.04.2021.
-//
-
 #ifndef IZ2_PARALLEL_H
 #define IZ2_PARALLEL_H
+
 #include <unistd.h>
 #include <sys/mman.h>
 #include <sys/wait.h>
