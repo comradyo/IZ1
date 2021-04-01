@@ -1,7 +1,3 @@
-//
-// Created by comradyo on 01.04.2021.
-//
-
 #include "functions.h"
 
 array_of_vectors *generate_array_of_vectors(size_t num_of_vecs, size_t num_of_coords) {

@@ -1,7 +1,3 @@
-//
-// Created by comradyo on 01.04.2021.
-//
-
 #include "parallel.h"
 
 _Bool sequential_searching_by_process(const float *vec_to_compare, const array_of_vectors *arr_of_vecs, size_t from_id,

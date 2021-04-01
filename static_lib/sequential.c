@@ -1,7 +1,3 @@
-//
-// Created by comradyo on 01.04.2021.
-//
-
 #include "../static_lib/sequential.h"
 
 _Bool sequential_searching(const float *vec_to_compare, const array_of_vectors *arr_of_vecs,
