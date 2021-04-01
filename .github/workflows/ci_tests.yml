@@ -2,7 +2,7 @@ name: 'CI_tests'
 on:
   push:
     branches:
-      - IZ2_branch
+      - iz2
 
 jobs:
 
