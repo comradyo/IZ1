@@ -1,9 +1,9 @@
 #include "gtest/gtest.h"
 
 extern "C" {
-    #include "../include/sequential.h"
-    #include "../include/functions.h"
-    #include "../include/parallel.h"
+    #include "sequential.h"
+    #include "functions.h"
+    #include "parallel.h"
 }
 
 const char* test_vector_5 = "../tests/test_vector_5.txt";

@@ -2,7 +2,7 @@
 // Created by comradyo on 01.04.2021.
 //
 
-#include "../include/functions.h"
+#include "functions.h"
 
 array_of_vectors *generate_array_of_vectors(size_t num_of_vecs, size_t num_of_coords) {
     array_of_vectors *arr_of_vcs = (array_of_vectors *) malloc(sizeof(array_of_vectors));
