@@ -2,9 +2,9 @@
 #include <time.h>
 #include <string.h>
 
-#include "../include/functions.h"
-#include "../include/parallel.h"
-#include "../include/sequential.h"
+#include "functions.h"
+#include "parallel.h"
+#include "sequential.h"
 
 void print_vectors(const array_of_vectors *arr_of_vecs) {
     if (arr_of_vecs == NULL) {
