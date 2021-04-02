@@ -29,6 +29,18 @@ TEST(calculating_norm, test_1) {
     EXPECT_NEAR(427.039, result, 0.001);
 }
 
+TEST(calculating_norm, test_2) {
+
+    size_t num_of_coords = 4;
+
+    const float vector_1[] = {0.f, 1.f, 0.f, 1.f};
+    const float vector_2[] = {1.f, 0.f, 1.f, 0.f};
+
+    float result = calculate_norm(vector_1, vector_2, num_of_coords);
+
+    EXPECT_NEAR(4, result, 0.001);
+}
+
 TEST(sequential_search, test_1) {
 
     float vector[] = {72.f, 85.f};
